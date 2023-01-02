@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -33,9 +38,9 @@ public class DBStorageService implements StorageService {
         }
         var directory = directoryOpt.get();
         File file = new File();
-
+        UUID uniqueName = UUID.randomUUID();
         MultipartFile multipartFile = newFile.getFile();
-        file.setName(multipartFile.getName());
+        file.setName(uniqueName + "-" + multipartFile.getOriginalFilename());
         file.setSize(multipartFile.getSize());
         file.setType(multipartFile.getContentType());
         try {
@@ -44,6 +49,14 @@ public class DBStorageService implements StorageService {
             throw new OblachkoException(exception);
         }
         file.setDirectory(directory);
+        file.setDateCreated(LocalDateTime.now());
+        try {
+            byte[] bytes;
+            bytes = multipartFile.getBytes();
+            Files.write(Paths.get("/Users/shokanovrassulkhair/IdeaProjects/oblachko/src/main/resources/files/" + uniqueName + "-" + multipartFile.getOriginalFilename()), bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         fileRepository.save(file);
 
     }
@@ -67,4 +80,5 @@ public class DBStorageService implements StorageService {
     public void deleteAll() {
 
     }
+
 }

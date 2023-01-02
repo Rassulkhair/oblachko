@@ -11,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.IOException;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,7 +51,7 @@ public class FilesController {
     }
 
     @PostMapping("/")
-    public void saveFile(MultipartFile multipartFile, @RequestParam UUID directoryId) {
+    public void saveFile(@RequestParam MultipartFile multipartFile, @RequestParam UUID directoryId) {
         NewFile file = new NewFile();
         file.setFile(multipartFile);
         file.setDirectoryId(directoryId);

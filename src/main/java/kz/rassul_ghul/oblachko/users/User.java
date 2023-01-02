@@ -24,6 +24,10 @@ public class User {
     @OneToMany(mappedBy = "user" , cascade = {CascadeType.ALL})
     private List<Role> roles;
 
+//    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL})
+//    @JoinColumn(name = "directory_id")
+//    private List<FileDirectories> directories;
+
     public void addRole(UserRole userRole) {
         if (roles == null) {
             roles = new ArrayList<>();
